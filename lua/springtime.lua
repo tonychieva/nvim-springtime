@@ -11,6 +11,9 @@ M.SETTINGS = {
         packaging = {
             selected = 1
         },
+        configuration = {
+            selected = 2
+        },
         project_metadata = {
             group = "com.example",
             artifact = "demo",
@@ -43,15 +46,19 @@ function M.setup(opts)
         local spring = opts.spring
         if spring.project then
             M.SETTINGS.spring.project.selected = (type(spring.project.selected) == "number" and spring.project.selected) or
-            M.SETTINGS.spring.project.selected
+                M.SETTINGS.spring.project.selected
         end
         if spring.language then
             M.SETTINGS.spring.language.selected = (type(spring.language.selected) == "number" and spring.language.selected) or
-            M.SETTINGS.spring.language.selected
+                M.SETTINGS.spring.language.selected
         end
         if spring.packaging then
             M.SETTINGS.spring.packaging.selected = (type(spring.packaging.selected) == "number" and spring.packaging.selected) or
-            M.SETTINGS.spring.packaging.selected
+                M.SETTINGS.spring.packaging.selected
+        end
+        if spring.configuration then
+            M.SETTINGS.spring.configuration.selected = (type(spring.configuration.selected) == "number" and spring.configuration.selected) or
+                M.SETTINGS.spring.configuration.selected
         end
 
         if spring.java_version then
@@ -81,15 +88,15 @@ function M.setup(opts)
 
         if spring.project_metadata then
             M.SETTINGS.spring.project_metadata.group = spring.project_metadata.group or
-            M.SETTINGS.spring.project_metadata.group
+                M.SETTINGS.spring.project_metadata.group
             M.SETTINGS.spring.project_metadata.artifact = spring.project_metadata.artifact or
-            M.SETTINGS.spring.project_metadata.artifact
+                M.SETTINGS.spring.project_metadata.artifact
             M.SETTINGS.spring.project_metadata.name = spring.project_metadata.name or
-            M.SETTINGS.spring.project_metadata.name
+                M.SETTINGS.spring.project_metadata.name
             M.SETTINGS.spring.project_metadata.package_name = spring.project_metadata.package_name or
-            M.SETTINGS.spring.project_metadata.package_name
+                M.SETTINGS.spring.project_metadata.package_name
             M.SETTINGS.spring.project_metadata.version = spring.project_metadata.version or
-            M.SETTINGS.spring.project_metadata.version
+                M.SETTINGS.spring.project_metadata.version
         end
     end
 
@@ -98,7 +105,7 @@ function M.setup(opts)
         M.SETTINGS.dialog.selection_keymap = dialog.selection_keymap or M.SETTINGS.dialog.selection_keymap
         M.SETTINGS.dialog.generate_keymap = dialog.generate_keymap or M.SETTINGS.dialog.generate_keymap
         M.SETTINGS.dialog.confirmation = (type(dialog.confirmation) == "boolean" and dialog.confirmation) or
-        M.SETTINGS.dialog.confirmation
+            M.SETTINGS.dialog.confirmation
 
         if dialog.style then
             M.SETTINGS.dialog.style.title_link = dialog.style.title_link or M.SETTINGS.dialog.style.title_link
@@ -110,14 +117,15 @@ function M.setup(opts)
         local workspace = opts.workspace
         M.SETTINGS.workspace.path = workspace.path or M.SETTINGS.workspace.path
         M.SETTINGS.workspace.decompress = (type(workspace.decompress) == "boolean" and workspace.decompress) or
-        M.SETTINGS.workspace.decompress
+            M.SETTINGS.workspace.decompress
         M.SETTINGS.workspace.open_auto = (type(workspace.open_auto) == "boolean" and workspace.open_auto) or
-        M.SETTINGS.workspace.open_auto
+            M.SETTINGS.workspace.open_auto
     end
 
     if opts.internal then
         local internal = opts.internal
-        M.SETTINGS.internal.log_debug = (type(internal.log_debug) == "boolean" and internal.log_debug) or M.SETTINGS.internal.log_debug
+        M.SETTINGS.internal.log_debug = (type(internal.log_debug) == "boolean" and internal.log_debug) or
+        M.SETTINGS.internal.log_debug
     end
 
     require 'springtime.util'.logger:debug("Setup options: " .. vim.inspect(M.SETTINGS))

@@ -54,11 +54,13 @@ end
 local function generate(input)
     local project_folder = string.format("%s/%s", input.workspace, input.project_name)
     local zip_file = string.format("%s.zip", project_folder)
-    local command = string.format([[curl -G %s/starter.zip -d type=%s -d language=%s -d packaging=%s -d bootVersion=%s -d javaVersion=%s -d groupId=%s -d artifactId=%s -d name=%s -d packageName=%s -d version=%s %s -o %s 2> >( while read line; do echo \"[ERROR][$(date '+%%m/%%d/%%Y %%T')]: ${line}\"; done >> %s) %s; echo $?]],
+    local command = string.format(
+        [[curl -G %s/starter.zip -d type=%s -d language=%s -d packaging=%s -d configurationFileFormat=%s -d bootVersion=%s -d javaVersion=%s -d groupId=%s -d artifactId=%s -d name=%s -d packageName=%s -d version=%s %s -o %s 2> >( while read line; do echo \"[ERROR][$(date '+%%m/%%d/%%Y %%T')]: ${line}\"; done >> %s) %s; echo $?]],
         util.spring_url,
         input.project,
         input.language,
         input.packaging,
+        input.configuration,
         input.spring_boot,
         input.java_version,
         input.project_group,
@@ -84,14 +86,15 @@ function M.create_project(values)
         project = project_to_id(values[1]),
         language = tostring(values[2]):lower(),
         packaging = tostring(values[3]):lower(),
-        spring_boot = values[4],
-        java_version = values[5],
-        project_group = util.trim(values[6]),
-        project_artifact = util.trim(values[7]),
-        project_name = util.trim(values[8]),
-        project_package_name = util.trim(values[9]),
+        configuration = tostring(values[4]):lower(),
+        spring_boot = values[5],
+        java_version = values[6],
+        project_group = util.trim(values[7]),
+        project_artifact = util.trim(values[8]),
+        project_name = util.trim(values[9]),
+        project_package_name = util.trim(values[10]),
         project_version = SETTINGS.spring.project_metadata.version,
-        dependencies = values[10],
+        dependencies = values[11],
         workspace = SETTINGS.workspace.path,
         decompress = SETTINGS.workspace.decompress,
     }

@@ -39,13 +39,14 @@ local function set_help(java_version_line)
     set(6)
     set(11)
     set(15)
+    set(19)
     set(java_version_line)
     vim.cmd(string.format("syn match springtimeSelect '%s' | hi link springtimeSelect %s", help_string, "Comment"))
 end
 
 function M.open()
     local opts = {
-        width = 47,
+        width = 50,
         height = bottom + 3,
         title = { "Springtime", SETTINGS.dialog.style.title_link },
         footer = { SETTINGS.dialog.generate_keymap .. " to generate or ESC to close", "Comment" },

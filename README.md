@@ -61,6 +61,10 @@ use {
             packaging = {
                 selected = 1
             },
+            -- Configuration: Properties and YAML (YAML default)
+            configuration = {
+                selected = 1
+            },
             -- Project Metadata defaults:
             -- Change the default values as you like
             -- This can also be edited in the popup

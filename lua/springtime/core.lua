@@ -51,9 +51,14 @@ function M.selection_key_event()
         select_or_unselect(lines, line_nr)
     end
 
-    if line_nr > 15 and line_nr < (M.java_version_section - 1) then
+    if line_nr > 15 and line_nr < 18 then
+        local lines = { 16, 17 }
+        select_or_unselect(lines, line_nr)
+    end
+
+    if line_nr > 19 and line_nr < (M.java_version_section - 1) then
         local lines = {}
-        for i = 15, M.java_version_section - 1 do table.insert(lines, i) end
+        for i = 19, M.java_version_section - 1 do table.insert(lines, i) end
         select_or_unselect(lines, line_nr)
     end
 
@@ -69,21 +74,25 @@ end
 function M.create_content()
     local style = SETTINGS.dialog.style.section_link
     local content = {
-        { constants.PROJECT_SECTION, style },
+        { constants.PROJECT_SECTION,                                                                                                   style },
         { (SETTINGS.spring.project.selected == 1 and constants.CHECKED_ICON or constants.UNCHECKED_ICON) .. constants.GRADLE_GROOVY },
         { (SETTINGS.spring.project.selected == 2 and constants.CHECKED_ICON or constants.UNCHECKED_ICON) .. constants.GRADLE_KOTLIN },
         { (SETTINGS.spring.project.selected == 3 and constants.CHECKED_ICON or constants.UNCHECKED_ICON) .. constants.MAVEN },
         { "" },
-        { constants.LANGUAGE_SECTION, style },
+        { constants.LANGUAGE_SECTION,                                                                                                  style },
         { (SETTINGS.spring.language.selected == 1 and constants.CHECKED_ICON or constants.UNCHECKED_ICON) .. constants.JAVA },
         { (SETTINGS.spring.language.selected == 2 and constants.CHECKED_ICON or constants.UNCHECKED_ICON) .. constants.KOTLIN },
         { (SETTINGS.spring.language.selected == 3 and constants.CHECKED_ICON or constants.UNCHECKED_ICON) .. constants.GROOVY },
         { "" },
-        { constants.PACKAGING_SECTION, style },
+        { constants.PACKAGING_SECTION,                                                                                                 style },
         { (SETTINGS.spring.packaging.selected == 1 and constants.CHECKED_ICON or constants.UNCHECKED_ICON) .. constants.JAR },
         { (SETTINGS.spring.packaging.selected == 2 and constants.CHECKED_ICON or constants.UNCHECKED_ICON) .. constants.WAR },
         { "" },
-        { constants.SPRING_BOOT_SECTION, style }
+        { constants.CONFIGURATION_SECTION,                                                                                             style },
+        { (SETTINGS.spring.configuration.selected == 1 and constants.CHECKED_ICON or constants.UNCHECKED_ICON) .. constants.PROPERTIES },
+        { (SETTINGS.spring.configuration.selected == 2 and constants.CHECKED_ICON or constants.UNCHECKED_ICON) .. constants.YAML },
+        { "" },
+        { constants.SPRING_BOOT_SECTION,                                                                                               style }
     }
 
     local spring_boot = create_dynamic_section("spring_boot")
@@ -94,7 +103,7 @@ function M.create_content()
     }
 
     local java_version = create_dynamic_section("java_version")
-    M.java_version_section = #spring_boot + 17
+    M.java_version_section = #spring_boot + 21
 
     M.project_metadata_section = M.java_version_section + #java_version + 2
 
@@ -136,7 +145,8 @@ function M.generate(values)
 
         local ok = generator.create_project(values)
         if ok then
-            util.logger:info(string.format("  [%s] generated correctly in workspace [%s]", util.trim(values[8]), SETTINGS.workspace.path))
+            util.logger:info(string.format("  [%s] generated correctly in workspace [%s]", util.trim(values[8]),
+                SETTINGS.workspace.path))
             if SETTINGS.workspace.open_auto then
                 vim.cmd(string.format("e %s/%s", SETTINGS.workspace.path, util.trim(values[8])))
             end
@@ -155,7 +165,7 @@ function M.update()
 
     local root_path = util.lua_springtime_path:gsub("/lua/springtime", "")
     local script = string.format(
-    "%sscript/build.sh %s 2> >( while read line; do echo \"[ERROR][$(date '+%%m/%%d/%%Y %%T')]: ${line}\"; done >> %s)",
+        "%sscript/build.sh %s 2> >( while read line; do echo \"[ERROR][$(date '+%%m/%%d/%%Y %%T')]: ${line}\"; done >> %s)",
         root_path, util.lua_springtime_path, util.springtime_log_file)
     local spinner = spinetta:new {
         main_msg = "  Springtime   Updating plugin... ",
@@ -186,7 +196,7 @@ function M.open()
     if not util.check_plugin_dependencies() then
         return
     end
-    require'springtime.ui'.open()
+    require 'springtime.ui'.open()
 end
 
 return M
