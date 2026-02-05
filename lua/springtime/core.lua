@@ -136,7 +136,7 @@ end
 function M.generate(values)
     local user_input = "y"
     if SETTINGS.dialog.confirmation then
-        user_input = vim.fn.input(string.format("Do you want to generate project [%s]? y/n: ", values[8]))
+        user_input = vim.fn.input(string.format("Do you want to generate project [%s]? y/n: ", values[9]))
     end
 
     if tostring(user_input):lower() == "y" then
@@ -145,10 +145,10 @@ function M.generate(values)
 
         local ok = generator.create_project(values)
         if ok then
-            util.logger:info(string.format("  [%s] generated correctly in workspace [%s]", util.trim(values[8]),
+            util.logger:info(string.format("  [%s] generated correctly in workspace [%s]", util.trim(values[9]),
                 SETTINGS.workspace.path))
             if SETTINGS.workspace.open_auto then
-                vim.cmd(string.format("e %s/%s", SETTINGS.workspace.path, util.trim(values[8])))
+                vim.cmd(string.format("e %s/%s", SETTINGS.workspace.path, util.trim(values[9])))
             end
         else
             util.logger:error("  Error generating project. Check the logs with :SpringtimeLogs command")
